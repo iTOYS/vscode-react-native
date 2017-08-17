@@ -162,17 +162,17 @@ For using another simulator device which is different to the default `iPhone 5`:
 
 * **Note:** You can get the list of installed simulator devices by:
 
-iOS devices(MacOS only):
+  iOS devices(MacOS only):
 
-```
-xcrun simctl list --json devices
-```
+  ```
+  xcrun simctl list --json devices
+  ```
 
-Android devices:
+  Android devices:
 
-```
-adb devices
-```
+  ```
+  adb devices
+  ```
 
 * **Note:** If you want run application on iOS devices make sure you have `ios-deploy` installed globally.
 
