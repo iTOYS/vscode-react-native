@@ -149,11 +149,11 @@ For using another simulator device which is different to the default `iPhone 5`:
 
 ```
 {
-  "react-native.ios": {
+  "react-native.ios.launchTarget": {
     "simulator" : "iPad Pro (9.7 inch)",
     "device": "Max's iPhone"
   },
-  "react-native.android": {
+  "react-native.android.launchTarget": {
     "simulator" : "emulator-5556",
     "device": "emulator-5556"
   }
