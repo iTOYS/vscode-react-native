@@ -9,6 +9,7 @@ import stripJsonComments = require("strip-json-comments");
 import { Telemetry } from "../common/telemetry";
 import { TelemetryHelper } from "../common/telemetryHelper";
 import { RemoteExtension } from "../common/remoteExtension";
+import { LogHelper } from "../common/log/logHelper";
 import { ExtensionTelemetryReporter, ReassignableTelemetryReporter } from "../common/telemetryReporters";
 import { ChromeDebugSession, IChromeDebugSessionOpts, ChromeDebugAdapter, logger } from "vscode-chrome-debug-core";
 import { ContinuedEvent, TerminatedEvent } from "vscode-debugadapter";
@@ -110,6 +111,7 @@ export function makeSession(
         }
 
         private requestSetup(args: any): void {
+            logger.setup(LogHelper.logLevel, false);
             this.projectRootPath = getProjectRoot(args);
             this.remoteExtension = RemoteExtension.atProjectRootPath(this.projectRootPath);
 

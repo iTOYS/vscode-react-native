@@ -169,12 +169,12 @@ export class Packager {
                 // If guessed entry point doesn't exist - skip prewarming, since it's not possible
                 // at this moment to determine _real_ bundle/ entry point name anyway
                 if (!exists) {
-                    Log.logInternalMessage(LogLevel.Info, `Entry point at ${indexFileName} ` +
+                    Log.logInternalMessage(LogLevel.Log, `Entry point at ${indexFileName} ` +
                         `doesn't exist. Skipping prewarming...`);
                     return;
                 }
 
-                Log.logInternalMessage(LogLevel.Info, "About to get: " + bundleURL);
+                Log.logInternalMessage(LogLevel.Log, "About to get: " + bundleURL);
                 return Request.request(bundleURL, true)
                     .then(() => {
                         Log.logMessage("The Bundle Cache was prewarmed.");

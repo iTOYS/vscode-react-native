@@ -32,7 +32,7 @@ export class InterProcessMessageSender implements InterProcessMessageSender {
         let body = "";
 
         let socket = net.connect(this.serverPath, () => {
-            Log.logInternalMessage(LogLevel.Info, `Connected to socket at ${this.serverPath}`);
+            Log.logInternalMessage(LogLevel.Log, `Connected to socket at ${this.serverPath}`);
             let messageJson = JSON.stringify(messageWithArguments);
             socket.write(messageJson);
         });
