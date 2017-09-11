@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 
 import * as fs from "fs";
+import * as os from "os";
 import * as path from "path";
 
 import { TelemetryHelper } from "../common/telemetryHelper";
@@ -17,6 +18,7 @@ import { DebugSession, OutputEvent, TerminatedEvent } from "vscode-debugadapter"
 const version = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "..", "package.json"), "utf-8")).version;
 const telemetryReporter = new ReassignableTelemetryReporter(new NullTelemetryReporter());
 const extensionName = "react-native-debug-adapter";
+const logFilePath = path.join(os.tmpdir(), `${extensionName}.txt`);
 
 function bailOut(reason: string): void {
     // Things have gone wrong in initialization: Report the error to telemetry and exit
@@ -54,7 +56,8 @@ function codeToRun() {
             adapter = makeAdapter(Node2DebugAdapter);
             // Create a debug session class based on ChromeDebugSession
             session = makeSession(ChromeDebugSession,
-                { adapter, extensionName }, telemetryReporter, extensionName, version);
+                { adapter, extensionName, logFilePath },
+                telemetryReporter, extensionName, version);
 
             // Run the debug session for the node debug adapter with our modified requests
             ChromeDebugSession.run(session);

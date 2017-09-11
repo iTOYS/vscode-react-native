@@ -10,8 +10,8 @@ import { Telemetry } from "../common/telemetry";
 import { TelemetryHelper } from "../common/telemetryHelper";
 import { RemoteExtension } from "../common/remoteExtension";
 import { ExtensionTelemetryReporter, ReassignableTelemetryReporter } from "../common/telemetryReporters";
-import { ChromeDebugSession, IChromeDebugSessionOpts, ChromeDebugAdapter, logger } from "vscode-chrome-debug-core";
-import { ContinuedEvent, TerminatedEvent } from "vscode-debugadapter";
+import { ChromeDebugSession, IChromeDebugSessionOpts, ChromeDebugAdapter } from "vscode-chrome-debug-core";
+import { ContinuedEvent, TerminatedEvent, logger, Logger } from "vscode-debugadapter";
 import { DebugProtocol } from "vscode-debugprotocol";
 
 import { MultipleLifetimesAppWorker } from "./appWorker";
@@ -73,8 +73,9 @@ export function makeSession(
 
         private launch(request: DebugProtocol.Request): void {
             this.requestSetup(request.arguments);
+            logger.warn("Starting React Native packager and launching app...");
             this.remoteExtension.launch(request)
-                .then(() => {
+            .then(() => {
                     return this.remoteExtension.getPackagerPort();
                 })
                 .then((packagerPort: number) => {
@@ -110,6 +111,14 @@ export function makeSession(
         }
 
         private requestSetup(args: any): void {
+            if (args.debugTrace === "verbose") {
+                logger.setup(Logger.LogLevel.Verbose, /*logToFile=*/true);
+            } else if (args.debugTrace) {
+                logger.setup(Logger.LogLevel.Log, /*logToFile=*/true);
+            } else {
+                logger.setup(Logger.LogLevel.Warn, /*logToFile=*/false);
+            }
+
             this.projectRootPath = getProjectRoot(args);
             this.remoteExtension = RemoteExtension.atProjectRootPath(this.projectRootPath);
 
@@ -130,7 +139,7 @@ export function makeSession(
             return TelemetryHelper.generate("attach", (generator) => {
                 return Q({})
                     .then(() => {
-                        logger.log("Starting debugger app worker.");
+                        logger.warn("Starting runtime and waiting app to connect...");
                         // TODO: remove dependency on args.program - "program" property is technically
                         // no more required in launch configuration and could be removed
                         const workspaceRootPath = path.resolve(path.dirname(request.arguments.program), "..");
@@ -141,8 +150,8 @@ export function makeSession(
                         this.appWorker.on("connected", (port: number) => {
                             logger.log("Debugger worker loaded runtime on port " + port);
                             // Don't mutate original request to avoid side effects
-                            let attachArguments = Object.assign({}, request.arguments, { port, restart: true, request: "attach" });
-                            let attachRequest = Object.assign({}, request, { command: "attach", arguments: attachArguments });
+                            let attachArguments = { ...request.arguments, port, restart: true, request: "attach" };
+                            let attachRequest = { ...request, command: "attach", arguments: attachArguments };
 
                             // Reinstantiate debug adapter, as the current implementation of ChromeDebugAdapter
                             // doesn't allow us to reattach to another debug target easily. As of now it's easier
