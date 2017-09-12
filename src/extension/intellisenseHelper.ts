@@ -135,14 +135,14 @@ export class IntellisenseHelper {
                 if (installProps.installed === true) {
 
                     if (semver.neq(IntellisenseHelper.s_typeScriptVersion, installProps.version)) {
-                        Log.logInternalMessage(LogLevel.Verbose, "TypeScript is installed with the wrong version: " + installProps.version);
+                        Log.logInternalMessage(LogLevel.Debug, "TypeScript is installed with the wrong version: " + installProps.version);
                         return true;
                     } else {
-                        Log.logInternalMessage(LogLevel.Verbose, "Installed TypeScript version is correct");
+                        Log.logInternalMessage(LogLevel.Debug, "Installed TypeScript version is correct");
                         return false;
                     }
                 } else {
-                    Log.logInternalMessage(LogLevel.Verbose, "TypeScript is not installed");
+                    Log.logInternalMessage(LogLevel.Debug, "TypeScript is not installed");
                     return true;
                 }
             })
@@ -241,7 +241,7 @@ export class IntellisenseHelper {
                 };
 
                 if (installed === true) {
-                    Log.logInternalMessage(LogLevel.Verbose, "TypeScript is installed - checking version");
+                    Log.logInternalMessage(LogLevel.Debug, "TypeScript is installed - checking version");
                     return IntellisenseHelper.readPackageJson()
                         .then((version: string) => {
                             installProps.version = version;

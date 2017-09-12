@@ -7,9 +7,15 @@
 
 import * as util from "util";
 import {InternalError, InternalErrorLevel} from "../error/internalError";
-import { LogLevel } from "vscode-debugadapter/lib/logger";
 
-export { LogLevel };
+export enum LogLevel {
+    None = 0,
+    Error = 1,
+    Warning = 2,
+    Info = 3,
+    Debug = 4,
+    Trace = 5,
+}
 
 export class LogHelper {
     public static MESSAGE_TAG: string = "[vscode-react-native]";
@@ -23,7 +29,7 @@ export class LogHelper {
         let valName: string = process.env[LogHelper.LOG_LEVEL_NAME];
 
         if (typeof(valName) === "undefined") {
-            valName = "Log"; // Set the default LogLevel to LogLevel.Log
+            valName = "None"; // Set the default LogLevel to LogLevel.None
         }
 
         return (<any> LogLevel)[valName];

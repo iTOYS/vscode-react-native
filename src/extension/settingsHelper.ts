@@ -74,7 +74,7 @@ export class SettingsHelper {
             let logLevelString: string = ConfigurationReader.readString(workspaceConfiguration.get("react-native-tools.logLevel"));
             return <LogLevel>parseInt(LogLevel[<any>logLevelString], 10);
         }
-        return LogLevel.Log;
+        return LogLevel.None;
     }
 
     /**

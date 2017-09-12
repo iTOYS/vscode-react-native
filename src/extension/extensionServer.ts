@@ -53,7 +53,7 @@ export class ExtensionServer implements vscode.Disposable {
         let deferred = Q.defer<void>();
 
         let launchCallback = (error: any) => {
-            Log.logInternalMessage(LogLevel.Log, `Extension messaging server started at ${this.pipePath}.`);
+            Log.logInternalMessage(LogLevel.Info, `Extension messaging server started at ${this.pipePath}.`);
             if (error) {
                 deferred.reject(error);
             } else {
@@ -123,7 +123,7 @@ export class ExtensionServer implements vscode.Disposable {
     private handleExtensionMessage(messageWithArgs: em.MessageWithArguments): Q.Promise<any> {
         let handler = this.messageHandlerDictionary[messageWithArgs.message];
         if (handler) {
-            Log.logInternalMessage(LogLevel.Log, "Handling message: " + em.ExtensionMessage[messageWithArgs.message]);
+            Log.logInternalMessage(LogLevel.Info, "Handling message: " + em.ExtensionMessage[messageWithArgs.message]);
             return handler.apply(this, messageWithArgs.args);
         } else {
             return Q.reject("Invalid message: " + messageWithArgs.message);

@@ -72,7 +72,7 @@ export class Log {
      * them to them.
      */
     public static logInternalMessage(logLevel: LogLevel, message: string) {
-        if (logLevel >= LogHelper.logLevel) {
+        if (LogHelper.logLevel >= logLevel) {
             this.globalLogger.logInternalMessage(logLevel, message);
         }
     }
