@@ -24,7 +24,7 @@ export interface ILogger {
 }
 
 export class LogHelper {
-    public static MAIN_CHANNEL_NAME: string = "React-native";
+    public static MAIN_CHANNEL_NAME: string = "React Native: Packager";
     private static loggersCache = {};
 
     public static get LOG_LEVEL(): LogLevel {
