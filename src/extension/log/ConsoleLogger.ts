@@ -37,7 +37,7 @@ export class ConsoleLogger implements ILogger {
     }
 
     public debug(message: string): void {
-        this.log(ConsoleLogger.getFormattedMessage(message, LogLevel.Debug), LogLevel.Debug);
+        this.log(message, LogLevel.Debug);
     }
 
     public logStream(data: Buffer, stream: NodeJS.WritableStream) {

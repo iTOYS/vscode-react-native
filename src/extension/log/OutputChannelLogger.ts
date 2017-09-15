@@ -53,7 +53,7 @@ export class OutputChannelLogger implements ILogger {
     }
 
     public debug(message: string): void {
-        this.log(OutputChannelLogger.getFormattedMessage(message, LogLevel.Debug), LogLevel.Debug);
+        this.log(message, LogLevel.Debug);
     }
 
     public logStream(data: Buffer | string) {
