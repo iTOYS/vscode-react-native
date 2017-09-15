@@ -4,7 +4,7 @@
 import { ILogger, LogLevel } from "./LogHelper";
 
 export class NullLogger implements ILogger {
-    public log (message: string, level?: LogLevel | undefined) {}
+    public log (message: string, level: LogLevel | undefined) {}
     public info (message: string) {}
     public warning (message: string) {}
     public error (errorMessage: string, error?: Error | undefined, stack?: boolean | undefined) {}

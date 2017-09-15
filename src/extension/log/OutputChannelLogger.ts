@@ -20,7 +20,7 @@ export class OutputChannelLogger implements ILogger {
         }
     }
 
-    public log(message: string, level?: LogLevel): void {
+    public log(message: string, level: LogLevel): void {
         if (LogHelper.LOG_LEVEL === LogLevel.None) {
             return;
         }
@@ -53,7 +53,7 @@ export class OutputChannelLogger implements ILogger {
     }
 
     public debug(message: string): void {
-        this.log(OutputChannelLogger.getFormattedMessage(message, LogLevel.Debug));
+        this.log(OutputChannelLogger.getFormattedMessage(message, LogLevel.Debug), LogLevel.Debug);
     }
 
     public logStream(data: Buffer | string) {

@@ -127,7 +127,7 @@ function warnWhenReactNativeVersionIsNotSupported(): void {
         const shortMessage = `React Native Tools need React Native version 0.19.0 or later to be installed in <PROJECT_ROOT>/node_modules/`;
         const longMessage = `${shortMessage}: ${reason}`;
         vscode.window.showWarningMessage(shortMessage);
-        outputChannelLogger.log(longMessage);
+        outputChannelLogger.warning(longMessage);
     });
 }
 

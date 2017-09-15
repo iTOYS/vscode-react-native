@@ -4,7 +4,7 @@
 import {ILogger, LogLevel, LogHelper} from "./LogHelper";
 
 export class ConsoleLogger implements ILogger {
-    public log(message: string, level?: LogLevel): void {
+    public log(message: string, level: LogLevel): void {
         if (LogHelper.LOG_LEVEL === LogLevel.None) {
             return;
         }
@@ -37,7 +37,7 @@ export class ConsoleLogger implements ILogger {
     }
 
     public debug(message: string): void {
-        this.log(ConsoleLogger.getFormattedMessage(message, LogLevel.Debug));
+        this.log(ConsoleLogger.getFormattedMessage(message, LogLevel.Debug), LogLevel.Debug);
     }
 
     public logStream(data: Buffer, stream: NodeJS.WritableStream) {

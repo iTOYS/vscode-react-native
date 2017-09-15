@@ -81,7 +81,7 @@ export class CommandPaletteHandler {
         return this.executeCommandInContext("publishToExpHost", () => {
             return this.executePublishToExpHost().then((didPublish) => {
                 if (!didPublish) {
-                    this.logger.log("Publishing was unsuccessful. Please make sure you are logged in Exponent and your project is a valid Exponentjs project");
+                    this.logger.warning("Publishing was unsuccessful. Please make sure you are logged in Exponent and your project is a valid Exponentjs project");
                 }
             });
         });
@@ -141,9 +141,9 @@ export class CommandPaletteHandler {
                     this.reactNativePackager.startAsExponent()
                 ).then(exponentUrl => {
                     this.reactNativePackageStatusIndicator.updatePackagerStatus(PackagerStatus.EXPONENT_PACKAGER_STARTED);
-                    this.logger.log("Application is running on Exponent.");
+                    this.logger.info("Application is running on Exponent.");
                     const exponentOutput = `Open your exponent app at ${exponentUrl}`;
-                    this.logger.log(exponentOutput);
+                    this.logger.info(exponentOutput);
                     vscode.commands.executeCommand("vscode.previewHtml", vscode.Uri.parse(exponentUrl), 1, "Expo QR code");
                 });
         }
@@ -157,7 +157,7 @@ export class CommandPaletteHandler {
      */
     private executeWithPackagerRunning(lambda: () => Q.Promise<void>): Q.Promise<void> {
         // Start the packager before executing the React-Native command
-        this.logger.log("Attempting to start the React Native packager");
+        this.logger.info("Attempting to start the React Native packager");
         return this.runStartPackagerCommandAndUpdateStatus().then(lambda);
     }
 
@@ -190,10 +190,10 @@ export class CommandPaletteHandler {
      * Publish project to exponent server. In order to do this we need to make sure the user is logged in exponent and the packager is running.
      */
     private executePublishToExpHost(): Q.Promise<boolean> {
-        this.logger.log("Publishing app to Exponent server. This might take a moment.");
+        this.logger.info("Publishing app to Exponent server. This might take a moment.");
         return this.loginToExponent()
             .then(user => {
-                this.logger.log(`Publishing as ${user.username}...`);
+                this.logger.debug(`Publishing as ${user.username}...`);
                 return this.startExponentPackager()
                     .then(() =>
                         XDL.publish(this.workspaceRoot))
@@ -202,7 +202,7 @@ export class CommandPaletteHandler {
                             return false;
                         }
                         const publishedOutput = `App successfully published to ${response.url}`;
-                        this.logger.log(publishedOutput);
+                        this.logger.info(publishedOutput);
                         vscode.window.showInformationMessage(publishedOutput);
                         return true;
                     });

@@ -40,7 +40,7 @@ export class LogCatMonitor implements vscode.Disposable {
     public start(): Q.Promise<void> {
         const logCatArguments = this.getLogCatArguments();
         const adbParameters = ["-s", this._deviceId, "logcat"].concat(logCatArguments);
-        this._logger.log(`Monitoring LogCat for device ${this._deviceId} with arguments: ${logCatArguments}`);
+        this._logger.debug(`Monitoring LogCat for device ${this._deviceId} with arguments: ${logCatArguments}`);
 
         this._logCatSpawn = new ChildProcess().spawn("adb", adbParameters);
 
@@ -48,19 +48,19 @@ export class LogCatMonitor implements vscode.Disposable {
             we won't print messages for the first 0.5 seconds */
         const filter = new ExecutionsFilterBeforeTimestamp(/*delayInSeconds*/ 0.5);
         this._logCatSpawn.stderr.on("data", (data: Buffer) => {
-            filter.execute(() => this._logger.log(data.toString()));
+            filter.execute(() => this._logger.info(data.toString()));
         });
 
         this._logCatSpawn.stdout.on("data", (data: Buffer) => {
-            filter.execute(() => this._logger.log(data.toString()));
+            filter.execute(() => this._logger.info(data.toString()));
         });
 
         return this._logCatSpawn.outcome.then(
             () =>
-                this._logger.log("LogCat monitoring stopped because the process exited."),
+                this._logger.info("LogCat monitoring stopped because the process exited."),
             (reason) => {
                 if (!this._logCatSpawn) { // We stopped log cat ourselves
-                    this._logger.log("LogCat monitoring stopped because the debugging session finished");
+                    this._logger.info("LogCat monitoring stopped because the debugging session finished");
                     return Q.resolve(void 0);
                 } else {
                     return Q.reject<void>(reason); // Unkown error. Pass it up the promise chain

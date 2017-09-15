@@ -54,7 +54,7 @@ export class ExtensionServer implements vscode.Disposable {
         let deferred = Q.defer<void>();
 
         let launchCallback = (error: any) => {
-            this.logger.info(`Extension messaging server started at ${this.pipePath}.`);
+            this.logger.debug(`Extension messaging server started at ${this.pipePath}.`);
             if (error) {
                 deferred.reject(error);
             } else {
@@ -223,12 +223,12 @@ export class ExtensionServer implements vscode.Disposable {
                     // We've seen that if we don't prewarm the bundle cache, the app fails on the first attempt to connect to the debugger logic
                     // and the user needs to Reload JS manually. We prewarm it to prevent that issue
                     generator.step("prewarmBundleCache");
-                    this.logger.log("Prewarming bundle cache. This may take a while ...");
+                    this.logger.info("Prewarming bundle cache. This may take a while ...");
                     return mobilePlatform.prewarmBundleCache();
                 })
                 .then(() => {
                     generator.step("mobilePlatform.runApp");
-                    this.logger.log("Building and running application.");
+                    this.logger.info("Building and running application.");
                     return mobilePlatform.runApp();
                 })
                 .then(() => {

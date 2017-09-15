@@ -74,7 +74,7 @@ export class IOSDebugModeManager {
 
     private tryOneAttemptToFindPListFile(): Q.Promise<string> {
         return this.simulatorPlist.findPlistFile().catch(reason => {
-            this.logger.info(`Failed one attempt to find plist file: ${reason}`);
+            this.logger.debug(`Failed one attempt to find plist file: ${reason}`);
             return "";
         });
     }

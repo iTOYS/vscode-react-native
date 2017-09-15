@@ -25,13 +25,13 @@ function getPackage(): Q.Promise<typeof XDLPackage> {
     }
     // Don't do the require if we don't actually need it
     try {
-        logger.log("Getting exponent dependecy.");
+        logger.debug("Getting exponent dependecy.");
         const xdl = require("xdl");
         xdlPackage = Q(xdl);
         return xdlPackage;
     } catch (e) {
         if (e.code === "MODULE_NOT_FOUND") {
-            logger.log("Dependency not present. Installing it...");
+            logger.debug("Dependency not present. Installing it...");
         } else {
             throw e;
         }
