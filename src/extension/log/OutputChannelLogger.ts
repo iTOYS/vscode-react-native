@@ -45,12 +45,8 @@ export class OutputChannelLogger implements ILogger {
             return;
         }
 
-        if (level) {
-            if (level >= LogHelper.LOG_LEVEL) {
-                message = OutputChannelLogger.getFormattedMessage(message, level);
-                this.channel.appendLine(message);
-            }
-        } else {
+        if (level >= LogHelper.LOG_LEVEL) {
+            message = OutputChannelLogger.getFormattedMessage(message, level);
             this.channel.appendLine(message);
         }
     }

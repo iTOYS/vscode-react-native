@@ -9,12 +9,8 @@ export class ConsoleLogger implements ILogger {
             return;
         }
 
-        if (level) {
-            if (level >= LogHelper.LOG_LEVEL) {
-                message = ConsoleLogger.getFormattedMessage(message, level);
-                console.log(message);
-            }
-        } else {
+        if (level >= LogHelper.LOG_LEVEL) {
+            message = ConsoleLogger.getFormattedMessage(message, level);
             console.log(message);
         }
     }
