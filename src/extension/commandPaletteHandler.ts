@@ -4,12 +4,12 @@
 import * as vscode from "vscode";
 import * as Q from "q";
 import * as XDL from "./exponent/xdlInterface";
-import {CommandExecutor} from "../common/commandExecutor";
 import {SettingsHelper} from "./settingsHelper";
 import {OutputChannelLogger} from "./log/OutputChannelLogger";
 import {LogHelper} from "./log/LogHelper";
 import {Packager, PackagerRunAs} from "../common/packager";
 import {AndroidPlatform} from "./android/androidPlatform";
+import {IOSPlatform} from "./ios/iOSPlatform";
 import {PackagerStatus, PackagerStatusIndicator} from "./packagerStatusIndicator";
 import {ReactNativeProjectHelper} from "../common/reactNativeProjectHelper";
 import {TargetPlatformHelper} from "../common/targetPlatformHelper";
@@ -108,12 +108,21 @@ export class CommandPaletteHandler {
     public runIos(target: "device" | "simulator" = "simulator"): Q.Promise<void> {
         TargetPlatformHelper.checkTargetPlatformSupport("ios");
         return this.executeCommandInContext("runIos", () => {
-            const runArgs = SettingsHelper.getRunArgs("ios", target);
+
+            const packagerPort = SettingsHelper.getPackagerPort();
+            const runArguments = SettingsHelper.getRunArgs("ios", target);
+
+            const platform = new IOSPlatform({ platform: "ios", projectRoot: this.workspaceRoot, packagerPort, runArguments }, { packager: this.reactNativePackager, packageStatusIndicator: this.reactNativePackageStatusIndicator });
+
             // Set the Debugging setting to disabled, because in iOS it's persisted across runs of the app
             return new IOSDebugModeManager(this.workspaceRoot)
                 .setSimulatorRemoteDebuggingSetting(/*enable=*/ false)
                 .catch(() => { }) // If setting the debugging mode fails, we ignore the error and we run the run ios command anyways
-                .then(() => this.executeReactNativeRunCommand("run-ios", runArgs));
+                .then(() => {
+                    return this.executeWithPackagerRunning(() => {
+                        return platform.runApp();
+                    });
+                });
         });
     }
 
@@ -140,18 +149,6 @@ export class CommandPaletteHandler {
         }
         return this.reactNativePackager.startAsReactNative()
             .then(() => this.reactNativePackageStatusIndicator.updatePackagerStatus(PackagerStatus.PACKAGER_STARTED));
-    }
-
-    /**
-     * Executes a react-native command passed after starting the packager
-     * {command} The command to be executed
-     * {args} The arguments to be passed to the command
-     */
-    private executeReactNativeRunCommand(command: string, args: string[] = []): Q.Promise<void> {
-        return this.executeWithPackagerRunning(() => {
-            return new CommandExecutor(this.workspaceRoot)
-                .spawnReactCommand(command, args).outcome;
-        });
     }
 
     /**

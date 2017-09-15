@@ -3,13 +3,13 @@
 
 import * as Q from "q";
 import {ChildProcess} from "child_process";
-import {ILogger, LogHelper} from "../extension/log/LogHelper";
+import {ILogger} from "../extension/log/LogHelper";
+import { NullLogger } from "../extension/log/NullLogger";
 import {Node} from "./node/node";
 import {ISpawnResult} from "./node/childProcess";
 import {HostPlatform, HostPlatformId} from "./hostPlatform";
 import {ErrorHelper} from "./error/errorHelper";
 import {InternalErrorCode} from "./error/internalErrorCode";
-import {ConsoleLogger} from "../extension/log/ConsoleLogger";
 
 export enum CommandVerbosity {
     OUTPUT,
@@ -36,14 +36,12 @@ export class CommandExecutor {
 
     private static ReactNativeCommand = "react-native";
     private static ReactNativeVersionCommand = "-v";
-    private currentWorkingDirectory: string;
-    private logger: ILogger;
     private childProcess = new Node.ChildProcess();
 
-    constructor(currentWorkingDirectory: string = process.cwd(), logger: ILogger = LogHelper.getLogger(ConsoleLogger)) {
-        this.currentWorkingDirectory = currentWorkingDirectory;
-        this.logger = logger;
-    }
+    constructor(
+        private currentWorkingDirectory: string = process.cwd(),
+        private logger: ILogger = new NullLogger()
+    ) { }
 
     public execute(command: string, options: Options = {}): Q.Promise<void> {
         this.logger.log(CommandExecutor.getCommandStatusString(command, CommandStatus.Start));
