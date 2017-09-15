@@ -7,7 +7,6 @@ import * as vscode from "vscode";
 
 import * as em from "../common/extensionMessaging";
 import {OutputChannelLogger} from "./log/OutputChannelLogger";
-import {LogHelper} from "./log/LogHelper";
 import {Packager} from "../common/packager";
 import {PackagerStatusIndicator} from "./packagerStatusIndicator";
 import {LogCatMonitor} from "./android/logCatMonitor";
@@ -29,7 +28,7 @@ export class ExtensionServer implements vscode.Disposable {
     private reactNativePackageStatusIndicator: PackagerStatusIndicator;
     private pipePath: string;
     private logCatMonitor: LogCatMonitor | null = null;
-    private logger: OutputChannelLogger = LogHelper.getLoggerWithCache(OutputChannelLogger, LogHelper.MAIN_CHANNEL_NAME, LogHelper.MAIN_CHANNEL_NAME, true);
+    private logger: OutputChannelLogger = OutputChannelLogger.getMainChannel();
 
     public constructor(projectRootPath: string, reactNativePackager: Packager, packagerStatusIndicator: PackagerStatusIndicator) {
 

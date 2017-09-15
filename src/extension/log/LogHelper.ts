@@ -24,24 +24,8 @@ export interface ILogger {
 }
 
 export class LogHelper {
-    public static MAIN_CHANNEL_NAME: string = "React Native: Packager";
-    private static loggersCache = {};
-
     public static get LOG_LEVEL(): LogLevel {
         return getLogLevel();
-    }
-    public static getLogger<T extends ILogger>(loggerType: new (...args: any[]) => T, ...args: any[]): T {
-        return new loggerType(...args);
-    }
-
-    public static getLoggerWithCache<T extends ILogger>(loggerType: new (...args: any[]) => T, name: string, ...args: any[]): T {
-        const key = `${loggerType.name}:${name}`;
-        return this.loggersCache[key] ? this.loggersCache[key] : this.loggersCache[key] = this.getLogger(loggerType, ...args);
-    }
-
-    public static clearCacheByName<T extends ILogger>(loggerType: new (...args: any[]) => T, name: string): void {
-        const key = `${loggerType.name}:${name}`;
-        delete this.loggersCache[key];
     }
 }
 

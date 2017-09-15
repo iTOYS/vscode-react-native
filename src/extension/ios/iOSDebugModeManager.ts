@@ -4,7 +4,6 @@
 import * as Q from "q";
 
 import {OutputChannelLogger} from "../log/OutputChannelLogger";
-import {LogHelper} from "../log/LogHelper";
 import {PromiseUtil} from "../../common/node/promise";
 import {PlistBuddy} from "./plistBuddy";
 import {SimulatorPlist} from "./simulatorPlist";
@@ -15,7 +14,7 @@ export class IOSDebugModeManager {
     private static REMOTE_DEBUGGING_SETTING_NAME = ":RCTDevMenu:isDebuggingRemotely";
     private static MAX_RETRIES = 5;
     private static DELAY_UNTIL_RETRY = 2000;
-    private logger: OutputChannelLogger = LogHelper.getLoggerWithCache(OutputChannelLogger, LogHelper.MAIN_CHANNEL_NAME, LogHelper.MAIN_CHANNEL_NAME, true);
+    private logger: OutputChannelLogger = OutputChannelLogger.getMainChannel();
 
     private projectRoot: string;
     private simulatorPlist: SimulatorPlist;

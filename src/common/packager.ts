@@ -7,7 +7,6 @@ import {ExponentHelper} from "../extension/exponent/exponentHelper";
 import {ErrorHelper} from "./error/errorHelper";
 import {InternalErrorCode} from "./error/internalErrorCode";
 import {OutputChannelLogger} from "../extension/log/OutputChannelLogger";
-import {LogHelper}  from "../extension/log/LogHelper";
 import {Node} from "./node/node";
 import {Package} from "./node/package";
 import {PromiseUtil} from "./node/promise";
@@ -29,7 +28,7 @@ export class Packager {
     public static DEFAULT_PORT = 8081;
     private packagerProcess: ChildProcess | undefined;
     private packagerRunningAs: PackagerRunAs;
-    private logger: OutputChannelLogger = LogHelper.getLoggerWithCache(OutputChannelLogger, LogHelper.MAIN_CHANNEL_NAME, LogHelper.MAIN_CHANNEL_NAME, true);
+    private logger: OutputChannelLogger = OutputChannelLogger.getChannel(OutputChannelLogger.MAIN_CHANNEL_NAME, true);
 
     private static JS_INJECTOR_FILENAME = "opn-main.js";
     private static JS_INJECTOR_FILEPATH = path.resolve(path.dirname(path.dirname(__dirname)), "js-patched", Packager.JS_INJECTOR_FILENAME);

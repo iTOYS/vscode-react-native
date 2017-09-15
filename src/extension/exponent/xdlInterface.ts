@@ -3,14 +3,13 @@
 
 import {CommandExecutor, CommandVerbosity} from "../../common/commandExecutor";
 import {HostPlatform} from "../../common/hostPlatform";
-import {LogHelper} from "../log/LogHelper";
 import {OutputChannelLogger} from "../log/OutputChannelLogger";
 
 import * as XDLPackage from "xdl";
 import * as path from "path";
 import * as Q from "q";
 
-const logger: OutputChannelLogger = LogHelper.getLoggerWithCache(OutputChannelLogger, LogHelper.MAIN_CHANNEL_NAME, LogHelper.MAIN_CHANNEL_NAME, true);
+const logger: OutputChannelLogger = OutputChannelLogger.getMainChannel();
 
 const EXPO_DEPS: string[] = [
     "xdl",

@@ -4,7 +4,6 @@
 import * as vscode from "vscode";
 import * as Q from "q";
 
-import {LogHelper} from "./log/LogHelper";
 import {IRunOptions} from "./launchArgs";
 import {Packager, PackagerRunAs} from "../common/packager";
 import {PackagerStatus, PackagerStatusIndicator} from "./packagerStatusIndicator";
@@ -33,7 +32,7 @@ export class GeneralMobilePlatform {
         this.projectPath = this.runOptions.projectRoot;
         this.packager = platformDeps.packager || new Packager(vscode.workspace.rootPath, this.projectPath, SettingsHelper.getPackagerPort());
         this.packageStatusIndicator = platformDeps.packageStatusIndicator || new PackagerStatusIndicator();
-        this.logger = LogHelper.getLoggerWithCache(OutputChannelLogger, `React Native: Run ${this.platformName}`, `Run ${this.platformName}`, true);
+        this.logger = OutputChannelLogger.getChannel(`React Native: Run ${this.platformName}`, true);
         this.logger.clear();
     }
 

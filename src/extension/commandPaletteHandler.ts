@@ -6,7 +6,6 @@ import * as Q from "q";
 import * as XDL from "./exponent/xdlInterface";
 import {SettingsHelper} from "./settingsHelper";
 import {OutputChannelLogger} from "./log/OutputChannelLogger";
-import {LogHelper} from "./log/LogHelper";
 import {Packager, PackagerRunAs} from "../common/packager";
 import {AndroidPlatform} from "./android/androidPlatform";
 import {IOSPlatform} from "./ios/iOSPlatform";
@@ -22,7 +21,7 @@ export class CommandPaletteHandler {
     private reactNativePackageStatusIndicator: PackagerStatusIndicator;
     private workspaceRoot: string;
     private exponentHelper: ExponentHelper;
-    private logger: OutputChannelLogger = LogHelper.getLoggerWithCache(OutputChannelLogger, LogHelper.MAIN_CHANNEL_NAME, LogHelper.MAIN_CHANNEL_NAME);
+    private logger: OutputChannelLogger = OutputChannelLogger.getMainChannel();
 
     constructor(workspaceRoot: string, reactNativePackager: Packager, packagerStatusIndicator: PackagerStatusIndicator, exponentHelper: ExponentHelper) {
         this.workspaceRoot = workspaceRoot;
